@@ -1,0 +1,6 @@
+*.o
+*.code-workspace
+*.stderr
+*.stdout
+*.ali
+*.bexch
