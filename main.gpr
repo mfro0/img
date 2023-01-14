@@ -11,7 +11,7 @@ project Gem_Aes_Test is
     package Compiler is
        for Driver("Ada") use "m68k-atari-mint-gcc";
         for Default_Switches("Ada") use ("-c", "-O2", "-fomit-frame-pointer");
-      for Required_Switches("Ada") use ("-c", "-fomit-frame-pointer", "-O2");
+      for Required_Switches("Ada") use ("-c", "-fomit-frame-pointer", "-O2", "-gnatyD");
     end Compiler;
     package Binder  is
        for Driver("Ada") use "m68k-atari-mint-gnatbind";
