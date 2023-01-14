@@ -31,6 +31,7 @@ package Gem_AES.Application is
                                   AES_WINX => 22360, AES_XAAES => 22528);
 
    function Get_Info(Application_Get_What : Application_Info_Type;
-                                 Ap_Out1, Ap_Out2, Ap_Out3, Ap_Out4 : Int16) return Int16;
-   
+                     Ap_Out1, Ap_Out2, Ap_Out3, Ap_Out4 : out Int16) return Int16;
+   function Read(Application_Id : Int16; Read_Length : Int16; Buff : out Uint16_Array_Type) return Int16;
+   function Search(Search_Mode : Int16; Name : String; Application_Type, Application_Id : out Int16) return Int16;
 end Gem_AES.Application;
