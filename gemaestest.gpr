@@ -1,23 +1,23 @@
 project GemAesTest is
     for Source_Dirs use ("src");
     for Object_Dir use "obj";
-    -- for Main use ("GemAESTest.adb");
-    --for Target use "m68k-atari-mint";
-    --for Canonical_Target use "m68k-atari-mint";
+    -- for Main use ("gemaestest.adb");
+    -- for Target use "m68k-atari-mint";
+    -- for Canonical_Target use "m68k-atari-mint";
     for Default_Language use "Ada";
     package Builder is
         for Executable("main.adb") use "gemaes.prg";
     end Builder;
     package Compiler is
-       for Driver("Ada") use "m68k-atari-mint-gcc";
-        for Default_Switches("Ada") use ("-c", "-O2", "-fomit-frame-pointer");
-      for Required_Switches("Ada") use ("-c", "-fomit-frame-pointer", "-O2", "-gnatyD");
+        for Driver("Ada") use "m68k-atari-mint-gcc";
+        for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyD");
+        for Required_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyD");
     end Compiler;
     package Linker is
         for Driver use "m68k-atari-mint-gcc";
+        for Switches("Ada") use ("-v");
     end Linker;
-    package Binder  is
-       for Driver("Ada") use "m68k-atari-mint-gnatbind";
-       for Objects_Path("Ada") use "obj";
-    end Binder;
+    -- package Binder  is
+    --    for Driver("Ada") use "m68k-atari-mint-gnatbind";
+    -- end Binder;
 end GemAesTest;
