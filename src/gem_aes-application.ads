@@ -2,7 +2,7 @@
 package Gem_AES.Application is
    function Init return Int16;
 
-   -- should be Exit really, but clashes with reserved word
+   -- should be Exit, really, but clashes with reserved word
    function AExit return Int16;
    procedure Bitvector_Set(Floppy_Disk_Vector : Uint16; Hard_Disk_Vector : Uint16);
 
