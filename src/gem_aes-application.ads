@@ -17,11 +17,11 @@ package Gem_AES.Application is
    function Control(Application_ID : in Int16; C : in Control_Type; ControlOut : out Int16) return Int16;
    function Find(Application_Name : String) return Int16;
 
-   type Application_Info_Type is (AES_LARGEFONT, AES_SMALLFONT, AES_SYSTEM, AES_LANGUAGE, AES_PROCESS,
-                                  AES_PCGEM, AES_INQUIRE, AES_RESERVED, AES_MOUSE, AES_MENU, AES_SHELL,
-                                  AES_WINDOW, AES_MESSAGE, AES_OBJECT, AES_FORM, AES_EXTENDED,
-                                  AES_NAES, AES_VERSION, AES_WF_OPTS, AES_EXTENDED_FUNCTIONS,
-                                  AES_APPLICATION_OPTIONS, AES_WINX, AES_XAAES);
+   type Application_Info_Type is (Aes_Largefont, Aes_Smallfont, Aes_System, Aes_Language, Aes_Process,
+                                  Aes_Pcgem, Aes_Inquire, Aes_Reserved, Aes_Mouse, Aes_Menu, Aes_Shell,
+                                  Aes_Window, Aes_Message, Aes_Object, Aes_Form, Aes_Extended,
+                                  Aes_Naes, Aes_Version, Aes_Wf_Opts, Aes_Extended_Functions,
+                                  Aes_Application_Options, Aes_Winx, Aes_Xaaes);
    for Application_Info_Type use (AES_LARGEFONT => 0, AES_SMALLFONT => 1, AES_SYSTEM => 2,
                                   AES_LANGUAGE => 3, AES_PROCESS => 4, AES_PCGEM => 5, AES_INQUIRE => 6,
                                   AES_RESERVED => 7, AES_MOUSE => 8, AES_MENU => 9, AES_SHELL => 10,
