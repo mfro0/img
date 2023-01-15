@@ -17,7 +17,7 @@ package body Gem_AES.Graf is
             "trap         #2"             & LF & HT,
             Volatile => True,
             Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-            Clobber => "d0,d1"
+            Clobber => "d0,d1,a0,a1"
         );
         Char_Width := Int16(Int_Out(1));
         Char_Height := Int16(Int_Out(2));
@@ -37,7 +37,7 @@ package body Gem_AES.Graf is
             "trap         #2"             & LF & HT,
             Volatile => True,
             Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-            Clobber => "d0,d1"
+            Clobber => "d0,d1,a0,a1"
         );
     end Mouse;
 
@@ -53,7 +53,7 @@ package body Gem_AES.Graf is
             "trap         #2"             & LF & HT,
             Volatile => True,
             Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-            Clobber => "d0,d1"
+            Clobber => "d0,d1,a0,a1"
         );
     end Mouse;
 

@@ -18,7 +18,7 @@ package body Gem_AES.Application is
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       return Int16(Int_Out(0));
    end Init;
@@ -34,7 +34,7 @@ package body Gem_AES.Application is
           "trap      #2"               & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       return Int16(Int_Out(0));
    end AExit;
@@ -51,7 +51,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
    end Bitvector_Set;
 
@@ -67,7 +67,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       ControlOut := Int16(Int_Out(1));
       return Int16(Int_Out(0));
@@ -85,7 +85,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       return Int16(Int_Out(0));
    end Find;
@@ -101,7 +101,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       Ap_Out1 := Int16(Int_Out(1));
       Ap_Out2 := Int16(Int_Out(2));
@@ -123,7 +123,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       Buff := Buffer;
       return Int16(Int_Out(0));
@@ -140,7 +140,7 @@ package body Gem_AES.Application is
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
-          Clobber => "d0,d1"
+          Clobber => "d0,d1,a0,a1"
       );
       Application_Type := Int16(Int_Out(1));
       Application_Id := Int16(Int_Out(2));

@@ -18,12 +18,20 @@ procedure GemAESTest is
     Desk_Rectangle      : Gem_AES.Rectangle;
 begin
     Application_Id := Gem_AES.Application.Init;
-    --Physical_Handle := Gem_AES.Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
+    Gem_AES.Graf.Mouse(Graf.Off);
+    Physical_Handle := Gem_AES.Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
     Desk_Rectangle := Gem_AES.Window.Get_Rectangle(0, Window.Work_XYWH);
-    Ada.Text_IO.Put_Line("Desk.X=" & Integer'Image(Integer(Desk_Rectangle.X)) &
-                         " Desk.Y=" & Integer'Image(Integer(Desk_Rectangle.Y)) &
-                         " Desk.W=" & Integer'Image(Integer(Desk_Rectangle.W)) &
-                         " Desk.H=" & Integer'Image(Integer(Desk_Rectangle.H)));
+    Ada.Text_IO.Put_Line("Desk.X =" & Integer'Image(Integer(Desk_Rectangle.X)) &
+                         " Desk.Y =" & Integer'Image(Integer(Desk_Rectangle.Y)) &
+                         " Desk.W =" & Integer'Image(Integer(Desk_Rectangle.W)) &
+                         " Desk.H =" & Integer'Image(Integer(Desk_Rectangle.H)));
+
+    Ada.Text_IO.Put_Line("GEM Handle =" & Integer'Image(Integer(Physical_Handle)));
+    Ada.Text_IO.Put_Line("Char_Width =" & Integer'Image(Integer(Char_Width)) &
+                         " Char_Height =" & Integer'Image(Integer(Char_Height)));
+    Ada.Text_IO.Put_Line("Char_Box_Width =" & Integer'Image(Integer(Char_Box_Width)) &
+                         " Char_Box_Height =" & Integer'Image(Integer(Char_Box_Height)));
+    Gem_AES.Graf.Mouse(Graf.On);
     Gem_AES.Graf.Mouse(Graf.Arrow);
 
     Button := Gem_AES.Form.Alert(3, "[3][Hello from Ada][ OK ]");

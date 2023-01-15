@@ -20,7 +20,7 @@ package body Gem_AES.Window is
             "trap         #2"             & LF & HT,
             Volatile => True,
             Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),
-            Clobber => "d0,d1"
+            Clobber => "d0,d1,a0,a1"
         );
         Rect.X := Int16(Int_Out(1));
         Rect.Y := Int16(Int_Out(2));
