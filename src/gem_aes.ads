@@ -16,6 +16,10 @@ package Gem_AES is
       P_Addr_Out    : System.Address;
    end record;
 
+   type Rectangle is record
+      X, Y, W, H     : Int16;
+   end record;
+
    Cntrl            : Uint16_Array_Type(0 .. 4);
    Global           : Uint16_Array_Type(0 .. 14);
    Int_In           : Uint16_Array_Type(0.. 15);

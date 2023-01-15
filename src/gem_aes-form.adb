@@ -21,7 +21,8 @@ package body Gem_AES.Form is
           "move.w       #200,d0"        & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
-          Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address))
+          Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
+          Clobber => "d0,d1"
       );
 
       return Int16(Int_Out(0));
