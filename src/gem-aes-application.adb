@@ -5,7 +5,7 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Gem.AES.Application is
+package body GEM.AES.Application is
    function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
    function Init return Int16 is

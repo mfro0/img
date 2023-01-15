@@ -85,7 +85,7 @@ package GEM.AES.Window is
                          Winx_Cfg => 22361,
                          D_Delay => 22362,
                          Shade => 22365,
-                         XA => 16#5841#
+                         Xa => 16#5841#
                         );                                               
     function Get_Rectangle(Handle : Int16; What : Action_Type) return Rectangle;
 end GEM.AES.Window;

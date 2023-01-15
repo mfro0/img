@@ -10,8 +10,8 @@ project GemAesTest is
     end Builder;
     package Compiler is
         for Driver("Ada") use "m68k-atari-mint-gcc";
-        for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyD");
-        for Required_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyD");
+        for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyr");
+        for Required_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyr");
     end Compiler;
     package Linker is
         for Driver use "m68k-atari-mint-gcc";
