@@ -5,7 +5,7 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Gem_AES.Window is
+package body GEM.AES.Window is
     use ASCII;
     function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
@@ -30,4 +30,4 @@ package body Gem_AES.Window is
         return Rect;
     end Get_Rectangle;
 
-end Gem_AES.Window;
+end GEM.AES.Window;

@@ -5,7 +5,7 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
 
-package Gem_AES.Graf is
+package GEM.AES.Graf is
     function Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height : out Int16) return Int16;
 
     type Mouse_Type is (Arrow,
@@ -62,4 +62,4 @@ package Gem_AES.Graf is
                         Set_Shape => 1100);
 
     procedure Mouse(Form : Mouse_Type);
-end Gem_AES.Graf;
+end GEM.AES.Graf;

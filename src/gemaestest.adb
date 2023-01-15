@@ -1,8 +1,8 @@
-with Gem_AES; use Gem_AES;
-with Gem_AES.Application;
-with Gem_AES.Form;
-with Gem_AES.Graf;
-with Gem_AES.Window;
+with GEM.AES; use GEM.AES;
+with GEM.AES.Application;
+with GEM.AES.Form;
+with GEM.AES.Graf;
+with GEM.AES.Window;
 with Ada.Text_IO;
 
 procedure GemAESTest is
@@ -15,25 +15,12 @@ procedure GemAESTest is
     Char_Box_Width,
     Char_Box_Height     : Int16;
 
-    Desk_Rectangle      : Gem_AES.Rectangle;
+    Desk_Rectangle      : GEM.AES.Rectangle;
 begin
-    Application_Id := Gem_AES.Application.Init;
-    Gem_AES.Graf.Mouse(Graf.Off);
-    Physical_Handle := Gem_AES.Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
-    Desk_Rectangle := Gem_AES.Window.Get_Rectangle(0, Window.Work_XYWH);
-    Ada.Text_IO.Put_Line("Desk.X =" & Integer'Image(Integer(Desk_Rectangle.X)) &
-                         " Desk.Y =" & Integer'Image(Integer(Desk_Rectangle.Y)) &
-                         " Desk.W =" & Integer'Image(Integer(Desk_Rectangle.W)) &
-                         " Desk.H =" & Integer'Image(Integer(Desk_Rectangle.H)));
+    Application_Id := GEM.AES.Application.Init;
+    Physical_Handle := GEM.AES.Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
+    Desk_Rectangle := GEM.AES.Window.Get_Rectangle(0, Window.Work_XYWH);
 
-    Ada.Text_IO.Put_Line("GEM Handle =" & Integer'Image(Integer(Physical_Handle)));
-    Ada.Text_IO.Put_Line("Char_Width =" & Integer'Image(Integer(Char_Width)) &
-                         " Char_Height =" & Integer'Image(Integer(Char_Height)));
-    Ada.Text_IO.Put_Line("Char_Box_Width =" & Integer'Image(Integer(Char_Box_Width)) &
-                         " Char_Box_Height =" & Integer'Image(Integer(Char_Box_Height)));
-    Gem_AES.Graf.Mouse(Graf.On);
-    Gem_AES.Graf.Mouse(Graf.Arrow);
-
-    Button := Gem_AES.Form.Alert(3, "[3][Hello from Ada][ OK ]");
-    Application_Id := Gem_AES.Application.AExit;
+    Button := GEM.AES.Form.Alert(3, "[3][Hello from Ada][ OK ]");
+    Application_Id := GEM.AES.Application.AExit;
 end GemAesTest;

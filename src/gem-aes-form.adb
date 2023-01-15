@@ -4,7 +4,7 @@ with Interfaces; use Interfaces;
 with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 
-package body Gem_AES.Form is
+package body GEM.AES.Form is
    function Alert(Default_Button : Int16; Alert_String : string) return Int16 is
       use ASCII;
       pragma Inline(Alert);
@@ -27,4 +27,4 @@ package body Gem_AES.Form is
 
       return Int16(Int_Out(0));
    end Alert;
-end Gem_AES.Form;
+end GEM.AES.Form;

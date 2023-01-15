@@ -5,7 +5,7 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Gem_AES.Graf is
+package body GEM.AES.Graf is
     use ASCII;
     function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
@@ -57,4 +57,4 @@ package body Gem_AES.Graf is
         );
     end Mouse;
 
-end Gem_AES.Graf;
+end GEM.AES.Graf;

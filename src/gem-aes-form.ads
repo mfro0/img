@@ -1,5 +1,5 @@
-with Gem_AES; use Gem_AES;
+with GEM.AES; use GEM.AES;
 
-package Gem_AES.Form is
+package GEM.AES.Form is
    function Alert(Default_Button : in Int16; Alert_String : String) return Int16;
-end;
+end GEM.AES.Form;

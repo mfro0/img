@@ -5,7 +5,7 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
 
-package Gem_AES.Window is
+package GEM.AES.Window is
     type Action_Type is (Kind,                      -- WF_KIND
                          Name,                      -- WF_NAME
                          Info,                      -- WF_INFO
@@ -88,4 +88,4 @@ package Gem_AES.Window is
                          XA => 16#5841#
                         );                                               
     function Get_Rectangle(Handle : Int16; What : Action_Type) return Rectangle;
-end Gem_AES.Window;
+end GEM.AES.Window;

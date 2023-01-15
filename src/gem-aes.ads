@@ -1,7 +1,7 @@
 with Interfaces.C;
 with System;
 
-package Gem_AES is
+package GEM.AES is
    type Int16 is new integer range -2 ** 16 .. 2 ** 16 - 1;
    type Uint16 is new Interfaces.Unsigned_16;
    type Uint16_Array_Type is array(integer range <>) of Uint16;
