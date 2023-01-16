@@ -2,7 +2,7 @@ with Interfaces.C;
 with System;
 
 package GEM.AES is
-   type Int16 is new integer range -2 ** 16 .. 2 ** 16 - 1;
+   type Int16 is new integer range -2 ** 15 .. 2 ** 15 - 1;
    type Uint16 is new Interfaces.Unsigned_16;
    type Uint16_Array_Type is array(integer range <>) of Uint16;
    type Address_Array_Type is array(integer range <>) of System.Address;
