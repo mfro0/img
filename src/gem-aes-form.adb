@@ -5,11 +5,11 @@ with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 
 package body GEM.AES.Form is
-   function Alert(Default_Button : Int16; Alert_String : string) return Int16 is
+   function Alert(Default_Button : Int16; Alert_String : String) return Int16 is
       use ASCII;
       pragma Inline(Alert);
          
-      S : string := Alert_String & NUL;
+      S : String := Alert_String & NUL;
       function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
    begin

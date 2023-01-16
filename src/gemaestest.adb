@@ -3,6 +3,7 @@ with GEM.AES.Application;
 with GEM.AES.Form;
 with GEM.AES.Graf;
 with GEM.AES.Window;
+with GEM.AES.Resource;
 with Ada.Text_IO;
 
 procedure GemAESTest is
@@ -16,11 +17,17 @@ procedure GemAESTest is
     Char_Box_Height     : Int16;
 
     Desk_Rectangle      : GEM.AES.Rectangle;
-begin
-    Application_Id := GEM.AES.Application.Init;
-    Physical_Handle := GEM.AES.Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
-    Desk_Rectangle := GEM.AES.Window.Get_Rectangle(0, Window.Work_XYWH);
 
-    Button := GEM.AES.Form.Alert(3, "[3][Hello from Ada][ OK ]");
-    Application_Id := GEM.AES.Application.AExit;
+    Resource_File_Name : constant String := "aestest.rsc";
+begin
+    Application_Id := Application.Init;
+    Physical_Handle := Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
+    Desk_Rectangle := Window.Get_Rectangle(0, Window.Work_XYWH);
+
+    if Resource.Load(Resource_File_Name) /= 0 then
+        Button := Form.Alert(3, "[3][Hello from Ada][ OK ]");
+    else
+        Button := Form.Alert(1, "[1][Resource file|" & Resource_File_Name & "|Not found][EXIT]");
+    end if;
+    Application_Id := Application.AExit;
 end GemAESTest;
