@@ -1,3 +1,4 @@
+with TOS; use TOS;
 with GEM.AES; use GEM.AES;
 with GEM.AES.Application;
 with GEM.AES.Form;
@@ -19,6 +20,7 @@ procedure GemAESTest is
     Desk_Rectangle      : GEM.AES.Rectangle;
 
     Resource_File_Name : constant String := "aestest.rsc";
+
 begin
     Application_Id := Application.Init;
     Physical_Handle := Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
