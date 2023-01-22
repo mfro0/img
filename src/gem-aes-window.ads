@@ -4,6 +4,7 @@ with Interfaces; use Interfaces;
 with Interfaces.C.Strings;
 with Ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
+with GEM.AES;
 
 package GEM.AES.Window is
     type Action_Type is (Kind,                      -- WF_KIND
@@ -87,5 +88,8 @@ package GEM.AES.Window is
                          Shade => 22365,
                          Xa => 16#5841#
                         );                                               
-    function Get_Rectangle(Handle : Int16; What : Action_Type) return Rectangle;
+    function Get(Handle : Int16; What : Action_Type) return Rectangle;
+
+    procedure Open(Handle : Int16; X, Y, W, H : Int16);
+    procedure Open(Handle : Int16; Area : AES.Rectangle);
 end GEM.AES.Window;

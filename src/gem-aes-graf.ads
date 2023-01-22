@@ -7,7 +7,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package GEM.AES.Graf is
     function Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height : out Int16) return Int16;
-
+    procedure Grow_Box(X0, Y0, W0, H0, X1, Y1, W1, H1 : Int16);
+    procedure Grow_Box(Start_Rect, End_Rect : GEM.AES.Rectangle);
+    
     type Mouse_Type is (Arrow,
                         Text_Cursor,
                         Hourglass,

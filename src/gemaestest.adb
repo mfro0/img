@@ -7,6 +7,8 @@ with GEM.AES.Window;
 with GEM.AES.Resource;
 with Ada.Text_IO;
 
+with OGEM; use OGEM;
+
 procedure GemAESTest is
     Application_Id      : Int16;
     Button              : Int16;
@@ -24,7 +26,7 @@ procedure GemAESTest is
 begin
     Application_Id := Application.Init;
     Physical_Handle := Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
-    Desk_Rectangle := Window.Get_Rectangle(0, Window.Work_XYWH);
+    Desk_Rectangle := GEM.AES.Window.Get(0, Window.Work_XYWH);
 
     if Resource.Load(Resource_File_Name) /= 0 then
         Button := Form.Alert(3, "[3][Hello from Ada][ OK ]");
