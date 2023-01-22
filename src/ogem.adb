@@ -74,8 +74,45 @@ package body OGEM is
     end Clear;
 
     procedure Scroll(Self : OWindow) is
+        Slider_VPos,
+        Slider_HPos,
+        Slider_HSize,
+        Slider_VSize        : Int16;
+        Delta_W,
+        Delta_H             : Int32;
     begin
-        null;
+        --
+        -- Set sliders according to the document area. 
+        -- If document size is smaller than the window area, use the latter
+        --
+        Delta_W := (if Self.Doc_Width > 0 then Self.Doc_Width else Self.Rect.W);
+        Delta_H := (if Self.Doc_Height > 0 then Self.Doc_Height else Self.Rect.H);
+
+        Slider_HSize := (if Delta_W = 0 then 1000 else 1000 * Self.Work.W / Delta_W);
+        Slider_HSize := (if Slider_HSize > 1000 then 1000 else Slider_HSize);
+        Slider_VSize := (if Delta_H = 0 then 1000 else 1000 * Self.Work.H / Delta_H);
+        Slider_VSize := (if Slider_VSize > 1000 then 1000 else Slider_VSize);
+
+        if Delta_W - Self.Work.H = 0 then
+            Slider_VPos := 0;
+        else
+            Slider_VPos := 1000 * Self.Left / (Delta_W - Self.Work.W);
+        end if;
+        Slider_VPos := (if Slider_VPos > 1000 then 1000 else Slider_VPos);
+        Slider_VPos := (if Slider_VPos < 0 then 0 else Slider_VPos);
+
+        if Delta_H - Self.Work.H = 0 then
+            Slider_HPos := 0;
+        else
+            Slider_HPos := 1000 * Self.Top / (Delta_H - Self.Work.H);
+        end if;
+        Slider_HPos := (if Slider_HPos > 1000 then 1000 else Slider_HPos);
+        Slider_HPos := (if Slider_HPos < 0 then 0 else Slider_HPos);
+
+        GEM.AES.Window.Set(Self.Handle, GEM.AES.Window.Horizontal_Slider, Slider_VPos, 0, 0, 0);
+        GEM.AES.Window.Set(Self.Handle, GEM.AES.Window.Vertical_Slider, Slider_VPos, 0, 0, 0);
+        GEM.AES.Window.Set(Self.Handle, GEM.AES.Window.Horizontal_Slider_Size, Slider_HSize, 0, 0, 0);
+        GEM.AES.Window.Set(Self.Handle, GEM.AES.Window.Vertical_Slider, Slider_VSize, 0, 0, 0);
     end Scroll;
 
     procedure Timer(Self : OWindow) is
