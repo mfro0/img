@@ -17,7 +17,7 @@ package body GEM.AES.Window is
         Int_In := (0 => Uint16(Calc_Mode'Pos(What)),
                    1 => Uint16(Kind),
                    2 => Uint16(Old_X), 3 => Uint16(Old_Y),
-                   4 => Uint16(Old_W), 5 => Uint16(Old_H));
+                   4 => Uint16(Old_W), 5 => Uint16(Old_H), others => 0);
         Asm("move.l       %0,d1"          & LF & HT &
             "move.w       #200,d0"        & LF & HT &
             "trap         #2"             & LF & HT,
@@ -63,6 +63,10 @@ package body GEM.AES.Window is
     end Get;
 
     procedure Set(Handle : Int16; What : Action_Type; Rect : GEM.AES.Rectangle) is
+    begin
+        null;
+    end Set;
+    procedure Set(Handle : Int16; What : Action_Type; X, Y, W, H : Int16) is
     begin
         null;
     end Set;
