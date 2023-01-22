@@ -16,7 +16,7 @@ package GEM.AES is
    end record;
 
    type Rectangle is record
-      X, Y, W, H     : Int16;
+      X, Y, W, H    : Int16;
    end record;
 
    Cntrl            : Uint16_Array_Type(0 .. 4);
