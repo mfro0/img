@@ -9,6 +9,38 @@ package body GEM.AES.Window is
     use ASCII;
     function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
+    procedure Calc(What : Calc_Mode; Kind : Window_Components; 
+                   Old_X, Old_Y, Old_W, Old_H : Int16;
+                   New_X, New_Y, New_W, New_H : out Int16) is
+    begin
+        Cntrl := (0 => 108, 1 => 6, 2 => 5, others => 0);
+        Int_In := (0 => Uint16(Calc_Mode'Pos(What)),
+                   1 => Uint16(Kind),
+                   2 => Uint16(Old_X), 3 => Uint16(Old_Y),
+                   4 => Uint16(Old_W), 5 => Uint16(Old_H));
+        Asm("move.l       %0,d1"          & LF & HT &
+            "move.w       #200,d0"        & LF & HT &
+            "trap         #2"             & LF & HT,
+            Volatile => True,
+            Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),
+            Clobber => "d0,d1,a0,a1"
+        );
+        New_X := Int16(Int_Out(1));
+        New_Y := Int16(Int_Out(2));
+        New_W := Int16(Int_Out(3));
+        New_H := Int16(Int_Out(4));
+
+        -- TODO: do something with Int_Out(0) (return value). Assert? Exception?
+    end Calc;
+
+    procedure Calc(What : Calc_Mode; Kind : Window_Components;
+                   Old_Rect : GEM.AES.Rectangle;
+                   New_Rect : out GEM.AES.Rectangle) is
+    begin
+        Calc(What, Kind, Old_Rect.X, Old_Rect.Y, Old_Rect.W, Old_Rect.H, 
+                         New_Rect.X, New_Rect.Y, New_Rect.W, New_Rect.H);
+    end Calc;
+
     function Get(Handle : Int16; What : Action_Type) return Rectangle is
         Rect    : Rectangle;
     begin
@@ -29,6 +61,11 @@ package body GEM.AES.Window is
 
         return Rect;
     end Get;
+
+    procedure Set(Handle : Int16; What : Action_Type; Rect : GEM.AES.Rectangle) is
+    begin
+        null;
+    end Set;
 
     procedure Open(Handle : Int16; X, Y, W, H : Int16) is
     begin
