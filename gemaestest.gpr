@@ -9,7 +9,7 @@ project GemAesTest is
         for Executable("gemaestest.adb") use "../gemaes.prg";
     end Builder;
     package Compiler is
-        for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyr");
+        for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-g", "-gnatyr");
         for Required_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyr");
     end Compiler;
 end GemAesTest;
