@@ -57,4 +57,24 @@ package body GEM.AES.Graf is
         );
     end Mouse;
 
+    procedure Grow_Box(X0, Y0, W0, H0, X1, Y1, W1, H1 : Int16) is
+    begin
+        Cntrl := (0 => 73, 1 => 8, 2 => 1, others => 0);
+        Int_In := (0 => 73, 1 => Uint16(X0), 2 => Uint16(Y0), 3 => Uint16(W0), 4 => Uint16(H0),
+                            5 => Uint16(X1), 6 => Uint16(Y1), 7 => Uint16(W1), 8 => Uint16(H1),
+                            others => 0);
+        Asm("move.l       %0,d1"          & LF & HT &
+            "move.w       #200,d0"        & LF & HT &
+            "trap         #2"             & LF & HT,
+            Volatile => True,
+            Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),
+            Clobber => "d0,d1,a0,a1"
+        );
+    end Grow_Box;
+
+    procedure Grow_Box(Start_Rect, End_Rect : GEM.AES.Rectangle) is
+    begin
+        Grow_Box(Start_Rect.X, Start_Rect.Y, Start_Rect.W, Start_Rect.H,
+                 End_Rect.X, End_Rect.Y, End_Rect.W, End_Rect.H);
+    end Grow_Box;
 end GEM.AES.Graf;
