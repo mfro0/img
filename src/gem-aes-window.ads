@@ -93,8 +93,9 @@ package GEM.AES.Window is
     procedure Open(Handle : Int16; X, Y, W, H : Int16);
     procedure Open(Handle : Int16; Area : AES.Rectangle);
 
-    procedure Set(Handle : Int16; What : Action_Type; Rect : GEM.AES.Rectangle);
     
+    procedure Set(Handle : Int16; What : Action_Type; Rect : GEM.AES.Rectangle);
+    procedure Set(Handle : Int16; What : Action_Type; X, Y, W, H : Int16);
     type Calc_Mode is (Calc_Border, Calc_Work);
     for Calc_Mode use (Calc_Border => 0, Calc_Work => 1);
 
