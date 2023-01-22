@@ -3,11 +3,11 @@ with GEM.AES.Window;
 with GEM.AES.Graf;
 
 package body OGEM is
-    Desk_Rectangle : GEM.AES.Rectangle := GEM.AES.Window.Get(0, GEM.AES.Window.Current_XYWH);
+   Desk_Rectangle : GEM.AES.Rectangle := GEM.AES.Window.Get(0, GEM.AES.Window.Current_XYWH);
 
-    procedure Full(Self : in out OWindow) is
-    begin
-        if Self.Is_Fulled then
+   procedure Full(Self : in out OWindow) is
+begin
+      if Self.Is_Fulled then
             GEM.AES.Window.Calc(GEM.AES.Window.Calc_Work, 
                                 Self.Kind, 
                                 Self.Old, Self.Work);
