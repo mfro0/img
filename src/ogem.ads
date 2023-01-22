@@ -1,10 +1,12 @@
 with TOS; use TOS;
 with GEM.AES;
+with GEM.AES.Window;
+
 package OGEM is
     type OWindow is tagged record
         Class           : Uint32;
         Handle          : Int16;
-        Kind            : Uint32;
+        Kind            : GEM.AES.Window.Window_Components;
         Word_Aligned    : Boolean;
 
         Rect,
@@ -27,8 +29,8 @@ package OGEM is
         Info            : String(1 .. 200);
     end record;
 
-    procedure Full(Self : OWindow);
-    procedure Size(Self : OWindow; X, Y, W, H : Int16);
+    procedure Full(Self : in out OWindow);
+    procedure Size(Self : in out OWindow; X, Y, W, H : Int16);
     procedure Draw(Self : OWindow; X, Y, W, H : Int16);
     procedure Delete(Self : OWindow);
     procedure Open(Self : in out OWindow; X, Y, W, H : Int16);
@@ -36,5 +38,5 @@ package OGEM is
     procedure Clear(Self : OWindow; X, Y, W, H : Int16);
     procedure Scroll(Self : OWindow);
     procedure Timer(Self : OWindow);
-    
+
 end OGEM;
