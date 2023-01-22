@@ -21,7 +21,7 @@ package GEM.AES is
 
    Cntrl            : Uint16_Array_Type(0 .. 4);
    Global           : Uint16_Array_Type(0 .. 14);
-   Int_In           : Uint16_Array_Type(0.. 15);
+   Int_In           : Uint16_Array_Type(0 .. 15);
    Int_Out          : Uint16_Array_Type(0 .. 9) := (others => 0);
 
    Addr_In          : Address_Array_Type(0 .. 7);
