@@ -5,6 +5,8 @@ with GEM.AES.Form;
 with GEM.AES.Graf;
 with GEM.AES.Window;
 with GEM.AES.Resource;
+with GEM.AES.Event;
+
 with Ada.Text_IO;
 
 with OGEM; use OGEM;

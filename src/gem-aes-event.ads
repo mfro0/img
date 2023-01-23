@@ -1,3 +1,4 @@
+with GEM.AES; use GEM.AES;
 
 package GEM.AES.Event is
 
