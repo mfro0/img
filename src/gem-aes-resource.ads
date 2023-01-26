@@ -1,23 +1,23 @@
 with GEM.AES; use GEM.AES;
 
 package GEM.AES.Resource is
-   type Resource_Type is (Tree,                -- R_TREE
-                          Object,              -- R_OBJECT
-                          Text_Ed_Info,        -- R_TEDINFO
-                          Icon_Block,          -- R_ICONBLK
-                          Bit_Block,           -- R_BITBLK
-                          R_String,            -- R_STRING
-                          Image_Data,          -- R_IMAGEDATA
-                          Object_Spec,         -- R_OBSPEC
-                          Text_Pointer,        -- R_TEPTEXT
-                          Template_Pointer,    -- R_TEPTMPLT
-                          Valid_Pointer,       -- R_TEPVALID
-                          Icon_Mask_Pointer,   -- R_IBPMASK
-                          Icon_Data_Pointer,   -- R_IBPDATA
-                          Icon_Text_Pointer,   -- R_IBPTEXT
-                          Bitmap_Data_Pointer, -- R_BIPDATA
-                          Free_String,         -- R_FRSTR
-                          Free_Image           -- R_FRIMG
+   type Resource_Type is (Tree,                 -- R_TREE
+                          Object,               -- R_OBJECT
+                          Text_Ed_Info,         -- R_TEDINFO
+                          Icon_Block,           -- R_ICONBLK
+                          Bit_Block,            -- R_BITBLK
+                          R_String,             -- R_STRING
+                          Image_Data,           -- R_IMAGEDATA
+                          Object_Spec,          -- R_OBSPEC
+                          Text_Pointer,         -- R_TEPTEXT
+                          Template_Pointer,     -- R_TEPTMPLT
+                          Valid_Pointer,        -- R_TEPVALID
+                          Icon_Mask_Pointer,    -- R_IBPMASK
+                          Icon_Data_Pointer,    -- R_IBPDATA
+                          Icon_Text_Pointer,    -- R_IBPTEXT
+                          Bitmap_Data_Pointer,  -- R_BIPDATA
+                          Free_String,          -- R_FRSTR
+                          Free_Image            -- R_FRIMG
                          );
    for Resource_Type use (Tree => 0,
                           Object => 1,
@@ -37,7 +37,11 @@ package GEM.AES.Resource is
                           Free_String => 15,
                           Free_Image => 16
                          );
-   function Get_Address(Typ : Resource_Type; Index : Int16; Addr : out System.Address) return Int16;
+   
+   generic
+      type Resource is private;
+   function Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out Resource) return Int16;
+   
    function Free return Int16;
    function Load(Resource_Name : String) return Int16;
 end GEM.AES.Resource;

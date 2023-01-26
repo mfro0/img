@@ -9,8 +9,9 @@ package body GEM.AES.Resource is
 
    function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
-   function Get_Address(Typ : Resource_Type; Index : Int16; Addr : out System.Address) return Int16 is
+   function Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out Resource) return Int16 is
       use ASCII;
+      function To_Resource is new Ada.Unchecked_Conversion(System.Address, Resource);
    begin
       Cntrl := (0 => 112, 1 => 2, 2 => 1, 4 => 1, others => 0);
       Int_In := (0 => Uint16(Resource_Type'Enum_Rep(Typ)), 1 => Uint16(Index), others => 0);
@@ -21,7 +22,7 @@ package body GEM.AES.Resource is
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
       );
-      Addr := Addr_Out(0);
+      Addr := To_Resource(Addr_Out(0));
       return Int16(Int_Out(0));
    end Get_Address;
 
