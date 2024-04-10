@@ -38,7 +38,7 @@ package body GEM.AES.Application is
           Clobber => "d0,d1,a0,a1"
       );
 
-      if Int_Out(0) /= 0 then
+      if Int_Out(0) = 0 then
          raise AES_Exception with "failed to cleanly exit the AES Application (" & Interfaces.Unsigned_16'image(Int_Out(0)) & ")";
       end if;
    end AExit;

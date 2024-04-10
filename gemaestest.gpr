@@ -10,6 +10,6 @@ project GemAesTest is
     end Builder;
     package Compiler is
         for Default_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-g", "-gnatyr");
-        for Required_Switches("Ada") use ("-fomit-frame-pointer", "-O2", "-gnatyr");
+        for Required_Switches("Ada") use ("-gnat2022", "-fomit-frame-pointer", "-O2", "-gnatyr");
     end Compiler;
 end GemAesTest;

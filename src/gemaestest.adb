@@ -33,14 +33,14 @@ procedure GemAESTest is
    -- type Object_Array is array (natural range <>) of GEM.AES.Object.Resource_Object
    --   with Convention => C;
    -- type Tree_T is new Object_Array;
-   -- type Tree_Ptr is new System.Address;
+   type Tree_Ptr is new System.Address;
    -- pragma No_Strict_Aliasing(Tree_Ptr);
    
    -- type Object_Array_Ptr is access Object_Array;
    -- type Object_Ptr is access GEM.AES.Object.Resource_Object;
    -- pragma No_Strict_Aliasing(Object_Ptr);
 
-   -- function Get_Tree is new GEM.AES.Resource.Get_Address(Resource => Tree_Ptr);
+   procedure Get_Tree is new GEM.AES.Resource.Get_Address(Resource => Tree_Ptr);
    -- function Get_Object is new GEM.AES.Resource.Get_Address(Resource => Object_Ptr);
    -- function To_Integer is new Ada.Unchecked_Conversion(Tree_Ptr, Integer);
    ret : Int16;
@@ -52,9 +52,9 @@ begin
    Physical_Handle := Graf.Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height);
    Desk_Rectangle := GEM.AES.Window.Get(0, Window.Work_XYWH);
    
-   --if Resource.Load(Resource_File_Name) /= 0 then
+      Resource.Load(Resource_File_Name);
       Button := Form.Alert(3, "[3][Hello from Ada][ OK ]");
-      -- ret := Get_Tree(GEM.AES.Resource.Tree, ABOUT, Tree_P);
+      -- Get_Tree(GEM.AES.Resource.Tree, ABOUT, Tree_P);
 
       -- Start_Rectangle := (Tree_P.all(ABOUT).Ob_X, Tree_P.all(ABOUT).Ob_Y,
       --                  Tree_P.all(ABOUT).Ob_Width, Tree_P.all(ABOUT).Ob_Height);
@@ -80,7 +80,6 @@ begin
       -- Ada.Integer_Text_IO.Put(Tree_P.all(10).Ob_Flags, Base => 16);
    -- else
       -- Button := Form.Alert(1, "[1][Resource file|" & Resource_File_Name & "|Not found][EXIT]");
-   -- end if;
    -- Ada.Text_IO.Put_Line()
    Application.AExit;
 exception
