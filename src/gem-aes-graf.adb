@@ -12,8 +12,8 @@ package body GEM.AES.Graf is
    function Handle(Char_Width, Char_Height, Char_Box_Width, Char_Box_Height : out Int16) return Int16 is
    begin
       Cntrl := (0 => 77, 2 => 5, others => 0);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"          & LF & HT &
+          "move.w       #200,%%d0"        & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -32,8 +32,8 @@ package body GEM.AES.Graf is
       Cntrl := (0 => 78, 1 => 1, 2 => 1, 3 => 1, others => 0);
       Int_In(0) := Mouse_Type'Enum_Rep(Form);
       -- Addr_In(0) := To_Address(0);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"          & LF & HT &
+          "move.w       #200,%%d0"        & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -48,8 +48,8 @@ package body GEM.AES.Graf is
       Cntrl := (0 => 78, 1 => 1, 2 => 1, 3 => 1, others => 0);
       Int_In(0) := Mouse_Type'Enum_Rep(Form);
       -- Addr_In(0) := To_Address(Bits);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"          & LF & HT &
+          "move.w       #200,%%d0"        & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -63,8 +63,8 @@ package body GEM.AES.Graf is
        Int_In := (0 => 73, 1 => Uint16(X0), 2 => Uint16(Y0), 3 => Uint16(W0), 4 => Uint16(H0),
                            5 => Uint16(X1), 6 => Uint16(Y1), 7 => Uint16(W1), 8 => Uint16(H1),
                            others => 0);
-       Asm("move.l       %0,d1"          & LF & HT &
-           "move.w       #200,d0"        & LF & HT &
+       Asm("move.l       %0,%%d1"          & LF & HT &
+           "move.w       #200,%%d0"        & LF & HT &
            "trap         #2"             & LF & HT,
            Volatile => True,
            Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),

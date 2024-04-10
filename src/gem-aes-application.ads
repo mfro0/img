@@ -1,9 +1,13 @@
 
 package GEM.AES.Application is
-   function Init return Int16;
+
+   AES_Exception : exception;
+
+   type App_Id_Type is new Int16;
+   function Init return App_Id_Type;
 
    -- should be Exit, really, but clashes with reserved word
-   function AExit return Int16;
+   procedure AExit;
    procedure Bitvector_Set(Floppy_Disk_Vector : Uint16; Hard_Disk_Vector : Uint16);
 
    -- constants for Application_Control

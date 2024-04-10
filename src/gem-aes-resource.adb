@@ -15,8 +15,8 @@ package body GEM.AES.Resource is
    begin
       Cntrl := (0 => 112, 1 => 2, 2 => 1, 4 => 1, others => 0);
       Int_In := (0 => Uint16(Resource_Type'Enum_Rep(Typ)), 1 => Uint16(Index), others => 0);
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -29,8 +29,8 @@ package body GEM.AES.Resource is
    function Free return Int16 is
    begin
       Cntrl := (0 => 111, 2 => 1, others => 0);
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -44,8 +44,8 @@ package body GEM.AES.Resource is
    begin
       Cntrl := (0 => 110, 2 => 1, 3 => 1, others => 0);
       Addr_In(0) := S(1)'Address;
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 

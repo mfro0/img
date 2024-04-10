@@ -3,6 +3,8 @@ with System;
 with TOS; use TOS;
 
 package GEM.AES is
+   AES_Exception : Exception;
+
    type Uint16_Array_Type is array(integer range <>) of Uint16;
    type Address_Array_Type is array(integer range <>) of System.Address;
 

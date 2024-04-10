@@ -18,8 +18,8 @@ package body GEM.AES.Window is
                  1 => Uint16(Kind),
                  2 => Uint16(Old_X), 3 => Uint16(Old_Y),
                  4 => Uint16(Old_W), 5 => Uint16(Old_H), others => 0);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),
@@ -47,8 +47,8 @@ package body GEM.AES.Window is
       Cntrl := (0 => 104, 1 => 2, 2 => 5, others => 0);
       Int_In(0) := Uint16(Handle);
       Int_In(1) := Action_Type'Enum_Rep(What);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),
@@ -80,8 +80,8 @@ package body GEM.AES.Window is
       Int_In(2) := Uint16(Y);
       Int_In(3) := Uint16(W);
       Int_In(4) := Uint16(H);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)),

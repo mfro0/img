@@ -7,36 +7,40 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body GEM.AES.Application is
    function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
+   function To_App_Id is new Ada.Unchecked_Conversion(Uint16, App_Id_Type);
    
-   function Init return Int16 is
+   function Init return App_Id_Type is
       use ASCII;
       pragma Inline(Init);
    begin
       Cntrl := (0 => 10, 2 => 1, others => 0);
-      Asm("move.l       %0,d1"          & LF & HT &
-          "move.w       #200,d0"        & LF & HT &
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
           "trap         #2"             & LF & HT,
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
       );
-      return Int16(Int_Out(0));
+      return To_App_Id(Int_Out(0));
    end Init;
 
    -- inconsistent naming to avoid clash with keyword 
-   function AExit return Int16 is
+   procedure AExit is
       use ASCII;
       pragma Inline(AExit);
    begin
       Cntrl := (0 => 19, 2 => 1, others => 0);
-      Asm("move.l    %0,d1"            & LF & HT &
-          "move.w    #200,d0"          & LF & HT &
-          "trap      #2"               & LF & HT,
+      Asm("move.l    %0,%%d1"           & LF & HT &
+          "move.w    #200,%%d0"         & LF & HT &
+          "trap      #2"                & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
       );
-      return Int16(Int_Out(0));
+
+      if Int_Out(0) /= 0 then
+         raise AES_Exception with "failed to cleanly exit the AES Application (" & Interfaces.Unsigned_16'image(Int_Out(0)) & ")";
+      end if;
    end AExit;
 
    procedure Bitvector_Set(Floppy_Disk_Vector : Uint16; Hard_Disk_Vector : Uint16) is
@@ -46,9 +50,9 @@ package body GEM.AES.Application is
       Cntrl := (0 => 16, 1 => 2, 2 => 1, others => 0);
       Int_In(0) := Floppy_Disk_Vector;
       Int_In(1) := Hard_Disk_Vector;
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
-          "trap         #2"            & LF & HT,
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
+          "trap         #2"             & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
@@ -62,9 +66,9 @@ package body GEM.AES.Application is
       -- Enum_Rep is an Ada 2022 feature
       Cntrl := (0 => 129, 1 => 1, 3 => 1, others => 0);
       Int_In(0) := Control_Type'Enum_Rep(C);
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
-          "trap         #2"            & LF & HT,
+      Asm("move.l       %0,%%d1"        & LF & HT &
+          "move.w       #200,%%d0"      & LF & HT &
+          "trap         #2"             & LF & HT,
           Volatile => True, 
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
@@ -80,8 +84,8 @@ package body GEM.AES.Application is
    begin
       Cntrl := (0 => 13, 1 => 0, 2 => 1, 3 => 1, 4 => 0);
       Addr_In(0) := C_Name'Address;
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -96,8 +100,8 @@ package body GEM.AES.Application is
    begin
       Cntrl := (0 => 130, 1 => 1, 2 => 5, others => 0);
       Int_In(0) := Application_Info_Type'Enum_Rep(Application_Get_What);
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -118,8 +122,8 @@ package body GEM.AES.Application is
       Cntrl := (0 => 11, 1 => 2, 2 => 1, 3 => 1, others => 0);
       Int_In := (0 => Uint16(Application_Id), 1 => Uint16(Read_Length), others => 0);
       Addr_In(0) := Buffer'Address;
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
@@ -135,8 +139,8 @@ package body GEM.AES.Application is
       Cntrl := (0 => 18, 1 => 1, 2 => 3, 3 => 1, others => 0);
       Int_In := (0 => Uint16(Search_Mode), others => 0);
       Addr_In(0) := Name'Address;
-      Asm("move.l       %0,d1"         & LF & HT &
-          "move.w       #200,d0"       & LF & HT &
+      Asm("move.l       %0,%%d1"         & LF & HT &
+          "move.w       #200,%%d0"       & LF & HT &
           "trap         #2"            & LF & HT, 
           Volatile => True,
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 

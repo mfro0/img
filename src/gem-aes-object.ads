@@ -1,16 +1,17 @@
 package GEM.AES.Object is
 
-   type UByte is mod 8;
+   type UInt8 is mod 8;
    type Bit is mod 1;
 
+   Root              : constant UInt16 := 0;
    type Bf_Ob_Spec is record
-      Char           : UByte; 
-      Frame_Size     : UByte;
-      Frame_Col      : UByte;
-      Text_Col       : UByte;
+      Char           : UInt8; 
+      Frame_Size     : UInt8;
+      Frame_Col      : UInt8;
+      Text_Col       : UInt8;
       Text_Mode      : Bit;
-      Fill_Pattern   : UByte;
-      Interior_Color : UByte;
+      Fill_Pattern   : UInt8;
+      Interior_Color : UInt8;
    end record;
    for Bf_Ob_Spec use record
       Char           at 0 range 24 .. 31;
