@@ -3,7 +3,7 @@ package GEM.AES.Object is
    type UInt8 is mod 8;
    type Bit is mod 1;
 
-   Root              : constant UInt16 := 0;
+   Root              : constant Uint16 := 0;
    type Bf_Ob_Spec is record
       Char           : UInt8; 
       Frame_Size     : UInt8;
@@ -28,24 +28,24 @@ package GEM.AES.Object is
       Te_Ptext       : String_Ptr;
       Te_Ptmplt      : String_Ptr;
       Te_PValid      : String_Ptr;
-      Te_Font        : UInt16;
-      Te_Font_Id     : UInt16;
-      Te_Just        : UInt16;
-      Te_Color       : UInt16;
-      Te_Fontsize    : UInt16;
-      Te_Thickness   : UInt16;
-      Te_Txtlen      : UInt16;
-      Te_Tmplen      : UInt16;
+      Te_Font        : Uint16;
+      Te_Font_Id     : Uint16;
+      Te_Just        : Uint16;
+      Te_Color       : Uint16;
+      Te_Fontsize    : Uint16;
+      Te_Thickness   : Uint16;
+      Te_Txtlen      : Uint16;
+      Te_Tmplen      : Uint16;
    end record;
    type Te_Info_Ptr is access Text_Ed_Info;
 
    type Bit_Block is record
       Bi_PData       : String_Ptr;
-      Bi_Wb          : UInt16;
-      Bi_Hl          : UInt16;
-      Bi_X           : UInt16;
-      Bi_Y           : UInt16;
-      Bi_Color       : UInt16;
+      Bi_Wb          : Uint16;
+      Bi_Hl          : Uint16;
+      Bi_X           : Uint16;
+      Bi_Y           : Uint16;
+      Bi_Color       : Uint16;
    end record;
    type Bit_Blk_Ptr is access Bit_Block;
 
