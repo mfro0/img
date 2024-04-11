@@ -11,5 +11,5 @@ package GEM.AES.Form is
    procedure Dial(What : Dialog_Flag; R0, R1 : GEM.AES.Rectangle);
 
    -- "Do" is a reserved word in Ada, so unfortunately we can't use it here
-   -- function Form_Do(Tree_Ptr : GEM.AES.Object.Tree_P; Start_Index : Int16) return Int16;
+   -- function F_Do(Tree_Ptr : GEM.AES.Object.Tree; Start_Index : Int16) return Int16;
 end GEM.AES.Form;
