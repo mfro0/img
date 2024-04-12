@@ -10,7 +10,6 @@ package body GEM.AES.Resource is
    function To_Address is new Ada.Unchecked_Conversion(System.Address, Unsigned_32);
    
    procedure Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out Resource_t) is
-      function To_Resource is new Ada.Unchecked_Conversion(System.Address, Resource_t);
    begin
       Cntrl := (0 => 112, 1 => 2, 2 => 1, 4 => 1, others => 0);
       Int_In := (0 => Uint16(Resource_Type'Enum_Rep(Typ)), 1 => Uint16(Index), others => 0);
@@ -21,7 +20,7 @@ package body GEM.AES.Resource is
           Inputs => Interfaces.Unsigned_32'Asm_Input("g", To_Address(Aes_Pb'Address)), 
           Clobber => "d0,d1,a0,a1"
       );
-      Addr := To_Resource(Addr_Out(0));
+      Addr := Addr_Out(0);
 
       if Int_Out(0) = 0 then
          raise AES_Exception with "failed to get address (" & System.Address'image(Aes_Pb'Address) & ")";

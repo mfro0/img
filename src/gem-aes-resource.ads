@@ -38,8 +38,9 @@ package GEM.AES.Resource is
                           Free_Image => 16
                          );
    
-   generic type Resource_t is private;
-   procedure Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out Resource_t);
+   -- generic type Resource_t is private;
+   -- procedure Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out Resource_t);
+   procedure Get_Address(Typ : Resource_Type; Index : Int16; Addr : in out System.Address);
    
    procedure Free;
    procedure Load(Resource_Name : String);

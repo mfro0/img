@@ -1,4 +1,6 @@
 with Interfaces.C;
+with Interfaces.C.Pointers;
+
 with GEM.AES.Resource; use GEM.AES.Resource;
 
 package GEM.AES.Object is
@@ -106,11 +108,18 @@ package GEM.AES.Object is
    end record with Convention => C;
    pragma Pack(Resource_Object);
 
-   type Resource_Array is array(natural range <>) of Resource_Object with Convention => C;
+   type Resource_Array is array(natural range <>) of aliased Resource_Object with Convention => C;
+   pragma Independent_Components(Resource_Array);
    type Tree_Ptr is access Resource_Array;
    type Object_Ptr is access Resource_Object;
 
-   procedure Get_Tree is new GEM.AES.Resource.Get_Address(Resource_t => Tree_Ptr);
+   package C renames Interfaces.C;
+   package Resource_Object_Pointers is new C.Pointers(Index => Natural,
+                                                      Element => Resource_Object,
+                                                      Element_Array => Resource_Array,
+                                                      Default_Terminator => (0, 0, 0, 0, 0, 0, (Index, 0), 0, 0, 0, 0));
+   function Init(Resource_Address : System.Address) return Resource_Object_Pointers.Pointer;
+
    
 
 end GEM.AES.Object;
