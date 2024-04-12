@@ -1,0 +1,35 @@
+project AESTest is
+   -- call gprbuild with "-Xver=debug" to compile a debug version
+   type ver_releaseion is ("debug", "release");
+   ver : ver_releaseion := external("ver", "release");
+
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Main use ("aes_test.adb");
+   for Target use "m68k-atari-mintelf";
+   for Canonical_Target use "m68k-atari-mintelf";
+   for Default_Language use "Ada";
+   package Builder is
+      for Executable("aes_test.adb") use "../aes_test.prg";
+   end Builder;
+   package Compiler is
+      case ver is
+         when "debug" =>
+            for Switches("Ada") use ("-gnat2022", "-g", "-gnatyr");
+         when "release" =>
+            for Switches("Ada") use ("-gnat2022", "-O2", "-gnatyr");
+         when others =>
+            null;
+      end case;
+   end Compiler;
+   package Linker is
+      case ver is
+         when "debug" =>
+            for Switches("Ada") use ("-g");
+         when "release" =>
+            for Switches("Ada") use ("-s");
+         when others =>
+            null;
+      end case;
+   end Linker;
+end AESTest;
