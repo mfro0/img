@@ -1,3 +1,6 @@
+with Interfaces.C;
+with GEM.AES.Resource; use GEM.AES.Resource;
+
 package GEM.AES.Object is
 
    type UInt8 is mod 8;
@@ -12,7 +15,9 @@ package GEM.AES.Object is
       Text_Mode      : Bit;
       Fill_Pattern   : UInt8;
       Interior_Color : UInt8;
-   end record;
+   end record with Convention => C;
+   pragma pack(Bf_Ob_Spec);
+
    for Bf_Ob_Spec use record
       Char           at 0 range 24 .. 31;
       Frame_Size     at 0 range 16 .. 23;
@@ -36,7 +41,8 @@ package GEM.AES.Object is
       Te_Thickness   : Uint16;
       Te_Txtlen      : Uint16;
       Te_Tmplen      : Uint16;
-   end record;
+   end record with Convention => C;
+   pragma pack(Text_Ed_Info);
    type Te_Info_Ptr is access Text_Ed_Info;
 
    type Bit_Block is record
@@ -46,7 +52,8 @@ package GEM.AES.Object is
       Bi_X           : Uint16;
       Bi_Y           : Uint16;
       Bi_Color       : Uint16;
-   end record;
+   end record with Convention => C;
+   pragma pack(Bit_Block);
    type Bit_Blk_Ptr is access Bit_Block;
 
    type Int16_Ptr is access Int16;
@@ -65,7 +72,8 @@ package GEM.AES.Object is
       Ib_YText       : Int16;
       Ib_WText       : Int16;
       Ib_HText       : Int16;
-   end record;
+   end record with Convention => C;
+   pragma pack(Icn_Blk);
    type Icn_Blk_Ptr is access Icn_Blk;
 
    type Ob_Spec_Ptr;
@@ -95,8 +103,14 @@ package GEM.AES.Object is
       Ob_Y,
       Ob_Width,
       Ob_Height   : Int16;
-   end record;
+   end record with Convention => C;
    pragma Pack(Resource_Object);
 
-   type Resource_Array is array(natural range <>) of Resource_Object;
+   type Resource_Array is array(natural range <>) of Resource_Object with Convention => C;
+   type Tree_Ptr is access Resource_Array;
+   type Object_Ptr is access Resource_Object;
+
+   procedure Get_Tree is new GEM.AES.Resource.Get_Address(Resource_t => Tree_Ptr);
+   
+
 end GEM.AES.Object;

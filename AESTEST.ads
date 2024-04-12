@@ -4,25 +4,26 @@
 --  created by ORCS 2.18
 --
 
-with TOS; use TOS;
-with GEM.AES; use GEM.AES;
-with GEM.AES.Object; use GEM.AES.Object;
+
+with Atari; use Atari;
 
 package aestest is
 
 --  constants
 
-    Num_Strings: constant int16 :=        73;
+    Num_Strings: constant int16 :=        74;
     Num_Bitblks: constant int16 :=        1;
     Num_Iconblks: constant int16 :=       7;
     Num_Color_Iconblks: constant int16 := 1;
     Num_Color_Icons: constant int16 :=    4;
     Num_Tedinfos: constant int16 :=       3;
-    Num_Free_Strings: constant int16 :=   1;
+    Num_Free_Strings: constant int16 :=   2;
     Num_Free_Images: constant int16 :=    1;
     Num_Objects: constant int16 :=        95;
     Num_Trees: constant int16 :=          5;
     Num_Userdefs: constant int16 :=       0;
+
+--  object numbers
 
 
     MMENU           : constant int16 :=   0; --  menu
@@ -107,6 +108,8 @@ package aestest is
     COLICON         : constant int16 :=   1; --  CICON in tree ICNS
 
     ALERT1          : constant int16 :=   0; --  Alert string
+
+    STR             : constant int16 :=   1; --  Free string
 
     RASTER          : constant int16 :=   0; --  Free image
 
