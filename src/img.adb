@@ -11,6 +11,7 @@ with System;
 procedure Img is
    type Ubyte is mod 2 ** 8;
    type Ubyte_Array is array(natural range <>) of Ubyte;
+   type Image_Array_Ptr is access Ubyte_Array;
 
    type Uint16 is range 0 .. 2 ** 16 - 1;
    type Uint16_Array is array(natural range <>) of Uint16;
@@ -31,6 +32,44 @@ procedure Img is
 
       return(Contents);
    end Get_Bin_Content_From_Path;
+
+   procedure Decompress(Header_Length : Integer; Pattern_Length : Integer; Ubytes : Ubyte_Array; Image : out Image_Array_Ptr) is
+      index     : Integer := 0;
+      finish    : Boolean := False;
+   begin
+      index := Header_Length * 2;
+      while not finish loop
+         case Ubytes(index) is
+            when 0 =>
+               if Ubytes(index + 1) > 0 then
+                  -- pattern run
+                  index := @ + 1 + Pattern_Length;
+               elsif Ubytes(index + 1) = 0 then
+                  if Ubytes(index + 2) = 16#FF# then
+                     -- scanline run
+                     index := @ + 3 + Integer(Ubytes(index + 3));
+                  else
+                     index := @ + 1;
+                     -- FIXME: error
+                  end if;
+               end if;
+            when 16#FF#  =>
+               -- solid run
+               index := @ + 1;
+               for i in 1 .. Ubytes(index + 1) loop
+                  null;
+               end loop;
+               index := @ + 1;
+            when others =>
+               null;
+               index := @ + 1;
+         end case;
+         Ada.Text_IO.Put_Line(Integer'Image(index));
+         if index = Ubytes'Length then
+            finish := True;
+         end if;
+      end loop;
+   end Decompress;
 
    type Img_Header is record
       Version : Uint16;
@@ -65,10 +104,13 @@ begin -- Img
 
       package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
       use ASCII;
+      subtype Image_Array is Ubyte_Array (1 .. Integer(Header.Line_Width) *
+                                          Integer(Header.Num_Lines));
 
-      index     : Integer := 0;
-      finish    : Boolean := False;
+      Image : Image_Array_Ptr;
    begin
+      Image := new Image_Array;
+
       Ubytes := Get_Bin_Content_From_Path(File_Name);
 
       Ada.Text_IO.Put_Line("IMG Header");
@@ -84,38 +126,7 @@ begin -- Img
 
       Ada.Text_IO.Put("Header'Size" & HT); Integer_Text_IO.Put(Header'Size / Ubyte'Size, 4, 10); Ada.Text_IO.Put_Line("");
 
-      index := Integer(Header.Header_Length) * 2;
-      while not finish loop
-         case Ubytes(index) is
-            when 0 =>
-               if Ubytes(index + 1) > 0 then
-                  -- pattern run
-                  index := @ + 1 + Integer(Header.Pattern_Length);
-               elsif Ubytes(index + 1) = 0 then
-                  if Ubytes(index + 2) = 16#FF# then
-                     -- scanline run
-                     index := @ + 3 + Integer(Ubytes(index + 3));
-                  else
-                     index := @ + 1;
-                     -- FIXME: error
-                  end if;
-               end if;
-            when 16#FF#  =>
-               -- solid run
-               index := @ + 1;
-               for i in 1 .. Ubytes(index + 1) loop
-                  null;
-               end loop;
-               index := @ + 1;
-            when others =>
-               null;
-               index := @ + 1;
-         end case;
-         Ada.Text_IO.Put_Line(Integer'Image(index));
-         if index = Ubytes'Length then
-            finish := True;
-         end if;
-      end loop;
+      Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
    end;
    Ada.Command_Line.Set_Exit_Status(0);
 end Img;
