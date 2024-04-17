@@ -105,7 +105,9 @@ begin -- Img
       package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
       use ASCII;
       subtype Image_Array is Ubyte_Array (1 .. Integer(Header.Line_Width) *
-                                          Integer(Header.Num_Lines));
+                                               Integer(Header.Num_Lines) *
+                                               Integer(Header.Num_Planes) /
+                                               Ubyte'size);
 
       Image : Image_Array_Ptr;
    begin

@@ -8,6 +8,7 @@ project Img is
 
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
+   for Exec_Dir use ".";
    for Main use ("img.adb");
 
    case pf is
@@ -25,9 +26,9 @@ project Img is
    package Builder is
       case pf is
          when "m68k" =>
-            for Executable("img.adb") use "../img.prg";
+            for Executable("img.adb") use "img.prg";
          when "x86" =>
-            for Executable("img.adb") use "../img";
+            for Executable("img.adb") use "img";
          when others =>
             null;
       end case;
