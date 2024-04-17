@@ -3,6 +3,7 @@ project Img is
    type version is ("debug", "release");
    ver : version := external("ver", "release");
 
+   -- call with "-Xpf=x86" to compile an X86_64 version
    type Platform is ("m68k", "x86");
    pf : Platform := external("pf", "m68k");
 
