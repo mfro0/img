@@ -19,9 +19,25 @@ procedure Img is
    type Uint16 is mod 2 ** 16;
    type Uint16_Array is array(natural range <>) of Uint16;
    pragma Pack(Uint16_Array);
-   type Image_Array_Ptr is access Uint16_Array;
+   type Uint16_Array_Ptr is access Uint16_Array;
    
    type Int16 is range -2 ** 15 + 1 .. 2 ** 15 - 1;
+
+   type Img_Header is record
+      Version : Uint16;
+      Header_Length : Uint16;
+      Num_Planes : Uint16;
+      Pattern_Length : Uint16;
+      Pixel_Width : Uint16;
+      Pixel_Height : Uint16;
+      Line_Width : Uint16;
+      Num_Lines : Uint16;
+   end record;
+   -- make sure it's word size packed
+   pragma Pack(Img_Header);
+   -- make sure it's big endian on all platforms
+   for Img_Header'Bit_Order use System.High_Order_First;
+   for Img_Header'Scalar_Storage_Order use System.High_Order_First;
 
    function Get_Bin_Content_From_Path(Path : in String) return Ubyte_Array is
       
@@ -40,35 +56,48 @@ procedure Img is
       return(Contents);
    end Get_Bin_Content_From_Path;
 
-   procedure Decompress(Header_Length : Integer; Pattern_Length : Integer; Ubytes : Ubyte_Array; Image : in out Image_Array_Ptr) is
-      index     : Integer := 0;
-      finish    : Boolean := False;
+   procedure Decompress(Header : Img_Header; Pattern_Length : Integer; Ubytes : Ubyte_Array;
+                        Image : in out Uint16_Array_Ptr) is
+      index    : Integer := 0;
+      finish   : Boolean := False;
+      n        : Integer;
+      Header_Length renames Integer(Header.Header_Length);
+      Num_Planes renames Integer(Header.Num_Planes);
    begin
       index := Header_Length * 2;
       while not finish loop
          case Ubytes(index) is
             when 0 =>
                if Ubytes(index + 1) > 0 then
-                  -- pattern run
+                  -- pattern run, read (and copy) Header.Pattern_Length Bytes 
+                  -- and repeat this n (i.e. Ubytes(index + 1) times 
+                  n := Integer(Ubytes(index + 1));
+                  for i in 1 .. n loop
+                     null;
+                  end loop;
                   index := @ + 1 + Pattern_Length;
                elsif Ubytes(index + 1) = 0 then
                   if Ubytes(index + 2) = 16#FF# then
-                     -- scanline run
+                     -- scanline run. Data for next scan line is to be used
+                     -- multiple times
+                     -- first byte is 16#FF#, second byte the number of scanlines
+                     -- to repeat it, following data is compressed as normal
                      index := @ + 3 + Integer(Ubytes(index + 3));
                   else
                      index := @ + 1;
                      -- FIXME: error
                   end if;
                end if;
-            when 16#FF#  =>
-               -- solid run
+            when 16#80#  =>
+               -- uncompressed bit string, length is in next byte
                index := @ + 1;
                for i in 1 .. Ubytes(index + 1) loop
                   null;
                end loop;
                index := @ + 1;
             when others =>
-               null;
+               -- solid run; high bit determines if 0 or 1, bits 7 to 0 are the 
+               -- length of the run in bytes
                index := @ + 1;
          end case;
          Ada.Text_IO.Put_Line(Integer'Image(index));
@@ -77,22 +106,6 @@ procedure Img is
          end if;
       end loop;
    end Decompress;
-
-   type Img_Header is record
-      Version : Uint16;
-      Header_Length : Uint16;
-      Num_Planes : Uint16;
-      Pattern_Length : Uint16;
-      Pixel_Width : Uint16;
-      Pixel_Height : Uint16;
-      Line_Width : Uint16;
-      Num_Lines : Uint16;
-   end record;
-   -- make sure it's word size packed
-   pragma Pack(Img_Header);
-   -- make sure it's big endian on all platforms
-   for Img_Header'Bit_Order use System.High_Order_First;
-   for Img_Header'Scalar_Storage_Order use System.High_Order_First;
 
    procedure Print_Header(Header : Img_Header) is
       package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Int16);
@@ -130,11 +143,9 @@ begin -- Img
       Header : aliased Img_Header;
       for Header'Address use Ubytes'Address;
 
-      type Uint16_Array_Ptr is access Uint16_Array;
       Image : Uint16_Array_Ptr;
       procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Uint16_Array_Ptr);
    begin
-
       Ubytes := Get_Bin_Content_From_Path(File_Name);
       Image := new Uint16_Array(1 .. Integer(Header.Line_Width) *
                                      Integer(Header.Num_Lines) *
@@ -149,7 +160,7 @@ begin -- Img
 
       Print_Header(Header);
 
-      -- Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
+      Decompress(Header, Integer(Header.Pattern_Length), Ubytes, Image);
 
       Deallocate_Image(Image);
    end;
