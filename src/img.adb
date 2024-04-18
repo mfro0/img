@@ -89,6 +89,25 @@ procedure Img is
    -- make sure it's big endian on all platforms
    for Img_Header'Bit_Order use System.High_Order_First;
    for Img_Header'Scalar_Storage_Order use System.High_Order_First;
+
+   procedure Print_Header(Header : Img_Header) is
+      package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
+      use ASCII;
+   begin
+      Ada.Text_IO.Put_Line("IMG Header");
+      Ada.Text_IO.Put_Line("==========");
+      Ada.Text_IO.Put("Version" & HT & HT); Integer_Text_IO.Put(Header.Version, 4, 16); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Header_Length" & HT); Integer_Text_IO.Put(Header.Header_Length, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Num_Planes" & HT); Integer_Text_IO.Put(Header.Num_Planes, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pattern_Length" & HT); Integer_Text_IO.Put(Header.Pattern_Length, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pixel_Width" & HT); Integer_Text_IO.Put(Header.Pixel_Width, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pixel_Height" & HT); Integer_Text_IO.Put(Header.Pixel_Height, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Line_Width" & HT); Integer_Text_IO.Put(Header.Line_Width, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Num_Lines" & HT); Integer_Text_IO.Put(Header.Num_Lines, 4, 10); Ada.Text_IO.Put_Line("");
+
+      Ada.Text_IO.Put("Header'Size" & HT); Integer_Text_IO.Put(Header'Size / Ubyte'Size, 4, 10); Ada.Text_IO.Put_Line("");
+   end Print_Header;
+
 begin -- Img
    if Ada.Command_Line.Argument_Count < 1 then
       Ada.Text_IO.Put_Line("usage: " & Ada.Command_Line.Command_Name & "<file.img>");
@@ -105,8 +124,6 @@ begin -- Img
       Header : aliased Img_Header;
       for Header'Address use Ubytes'Address;
 
-      package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
-      use ASCII;
       subtype Image_Array is Uint16_Array (1 .. Integer(Header.Line_Width) *
                                                 Integer(Header.Num_Lines) *
                                                 Integer(Header.Num_Planes) /
@@ -122,18 +139,7 @@ begin -- Img
 
       Ubytes := Get_Bin_Content_From_Path(File_Name);
 
-      Ada.Text_IO.Put_Line("IMG Header");
-      Ada.Text_IO.Put_Line("==========");
-      Ada.Text_IO.Put("Version" & HT & HT); Integer_Text_IO.Put(Header.Version, 4, 16); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Header_Length" & HT); Integer_Text_IO.Put(Header.Header_Length, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Num_Planes" & HT); Integer_Text_IO.Put(Header.Num_Planes, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pattern_Length" & HT); Integer_Text_IO.Put(Header.Pattern_Length, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pixel_Width" & HT); Integer_Text_IO.Put(Header.Pixel_Width, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pixel_Height" & HT); Integer_Text_IO.Put(Header.Pixel_Height, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Line_Width" & HT); Integer_Text_IO.Put(Header.Line_Width, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Num_Lines" & HT); Integer_Text_IO.Put(Header.Num_Lines, 4, 10); Ada.Text_IO.Put_Line("");
-
-      Ada.Text_IO.Put("Header'Size" & HT); Integer_Text_IO.Put(Header'Size / Ubyte'Size, 4, 10); Ada.Text_IO.Put_Line("");
+      Print_Header(Header);
 
       Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
 
