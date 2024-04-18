@@ -124,10 +124,10 @@ begin -- Img
       Header : aliased Img_Header;
       for Header'Address use Ubytes'Address;
 
-      subtype Image_Array is Uint16_Array (1 .. Integer(Long_Integer(Header.Line_Width) *
-                                                        Long_Integer(Integer(Header.Num_Lines)) *
-                                                        Long_Integer(Integer(Header.Num_Planes)) /
-                                                        Long_Integer(Uint16'size)));
+      subtype Image_Array is Uint16_Array (1 .. Integer(Header.Line_Width) *
+                                                Integer(Header.Num_Lines) *
+                                                Integer(Header.Num_Planes) /
+                                                Uint16'size);
 
       Image : Image_Array_Ptr;
       procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Image_Array_Ptr);
