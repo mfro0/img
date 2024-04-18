@@ -14,10 +14,14 @@ with Png_IO;
 procedure Img is
    type Ubyte is mod 2 ** 8;
    type Ubyte_Array is array(natural range <>) of Ubyte;
+   pragma Pack(Ubyte_Array);
 
-   type Uint16 is range 0 .. 2 ** 16 - 1;
+   type Uint16 is mod 2 ** 16;
    type Uint16_Array is array(natural range <>) of Uint16;
+   pragma Pack(Uint16_Array);
    type Image_Array_Ptr is access Uint16_Array;
+   
+   type Int16 is range -2 ** 15 + 1 .. 2 ** 15 - 1;
 
    function Get_Bin_Content_From_Path(Path : in String) return Ubyte_Array is
       
@@ -91,19 +95,21 @@ procedure Img is
    for Img_Header'Scalar_Storage_Order use System.High_Order_First;
 
    procedure Print_Header(Header : Img_Header) is
-      package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
+      package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Int16);
+      package Modular_IO is new Ada.Text_IO.Modular_IO (Num => Uint16);
+
       use ASCII;
    begin
       Ada.Text_IO.Put_Line("IMG Header");
       Ada.Text_IO.Put_Line("==========");
-      Ada.Text_IO.Put("Version" & HT & HT); Integer_Text_IO.Put(Header.Version, 4, 16); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Header_Length" & HT); Integer_Text_IO.Put(Header.Header_Length, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Num_Planes" & HT); Integer_Text_IO.Put(Header.Num_Planes, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pattern_Length" & HT); Integer_Text_IO.Put(Header.Pattern_Length, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pixel_Width" & HT); Integer_Text_IO.Put(Header.Pixel_Width, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Pixel_Height" & HT); Integer_Text_IO.Put(Header.Pixel_Height, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Line_Width" & HT); Integer_Text_IO.Put(Header.Line_Width, 4, 10); Ada.Text_IO.Put_Line("");
-      Ada.Text_IO.Put("Num_Lines" & HT); Integer_Text_IO.Put(Header.Num_Lines, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Version" & HT & HT); Modular_IO.Put(Header.Version, 4, 16); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Header_Length" & HT); Modular_IO.Put(Header.Header_Length, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Num_Planes" & HT); Modular_IO.Put(Header.Num_Planes, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pattern_Length" & HT); Modular_IO.Put(Header.Pattern_Length, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pixel_Width" & HT); Modular_IO.Put(Header.Pixel_Width, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Pixel_Height" & HT); Modular_IO.Put(Header.Pixel_Height, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Line_Width" & HT); Modular_IO.Put(Header.Line_Width, 4, 10); Ada.Text_IO.Put_Line("");
+      Ada.Text_IO.Put("Num_Lines" & HT); Modular_IO.Put(Header.Num_Lines, 4, 10); Ada.Text_IO.Put_Line("");
 
       Ada.Text_IO.Put("Header'Size" & HT); Integer_Text_IO.Put(Header'Size / Ubyte'Size, 4, 10); Ada.Text_IO.Put_Line("");
    end Print_Header;
@@ -124,23 +130,22 @@ begin -- Img
       Header : aliased Img_Header;
       for Header'Address use Ubytes'Address;
 
-      subtype Image_Array is Uint16_Array (1 .. Integer(Header.Line_Width) *
-                                                Integer(Header.Num_Lines) *
-                                                Integer(Header.Num_Planes) /
-                                                Uint16'size);
-
-      Image : Image_Array_Ptr;
-      procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Image_Array_Ptr);
+      type Uint16_Array_Ptr is access Uint16_Array;
+      Image : Uint16_Array_Ptr;
+      procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Uint16_Array_Ptr);
    begin
 
       Ubytes := Get_Bin_Content_From_Path(File_Name);
-      Image := new Uint16_Array(1 .. Integer(Header.Line_Width) * Integer(Header.Num_Lines) * Integer(Header.Num_Planes) / Uint16'Size);
+      Image := new Uint16_Array(1 .. Integer(Header.Line_Width) *
+                                     Integer(Header.Num_Lines) *
+                                     Integer(Header.Num_Planes) / Uint16'Size);
 
-      Ada.Text_IO.Put_Line("Image array takes " & Integer'Image(Integer(Header.Line_Width) * Integer(Header.Num_Lines) *
-                                                  Integer(Header.Num_Planes) /
-                                                  Ubyte'Size) & " words (" &
-                                                  Integer'Image(Image.all'Length) &
-                                                  " Bytes)");
+      Ada.Text_IO.Put_Line("Image array takes " & Integer'Image(Integer(Header.Line_Width) *
+                                                                Integer(Header.Num_Lines) *
+                                                                Integer(Header.Num_Planes) /
+                                                                Uint16'Size) & " words (" &
+                                                                Integer'Image(Image.all'Size / Ubyte'Size) &
+                                                                " Bytes)");
 
       Print_Header(Header);
 
