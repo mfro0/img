@@ -124,24 +124,27 @@ begin -- Img
       Header : aliased Img_Header;
       for Header'Address use Ubytes'Address;
 
-      subtype Image_Array is Uint16_Array (1 .. Integer(Header.Line_Width) *
-                                                Integer(Header.Num_Lines) *
-                                                Integer(Header.Num_Planes) /
-                                                (Uint16'size / Ubyte'size));
+      subtype Image_Array is Uint16_Array (1 .. Integer(Long_Integer(Header.Line_Width) *
+                                                        Long_Integer(Integer(Header.Num_Lines)) *
+                                                        Long_Integer(Integer(Header.Num_Planes)) /
+                                                        Long_Integer(Uint16'size)));
 
       Image : Image_Array_Ptr;
       procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Image_Array_Ptr);
    begin
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(Header.Line_Width) * Integer(Header.Num_Lines) *
-                                         Integer(Header.Num_Planes) /
-                                         (Uint16'Size / Ubyte'Size)));
-      Image := new Image_Array;
 
       Ubytes := Get_Bin_Content_From_Path(File_Name);
+      Image := new Uint16_Array(1 .. Integer(Header.Line_Width) * Integer(Header.Num_Lines) * Integer(Header.Num_Planes) / Uint16'Size);
+
+      Ada.Text_IO.Put_Line("Image array takes " & Integer'Image(Integer(Header.Line_Width) * Integer(Header.Num_Lines) *
+                                                  Integer(Header.Num_Planes) /
+                                                  Ubyte'Size) & " words (" &
+                                                  Integer'Image(Image.all'Length) &
+                                                  " Bytes)");
 
       Print_Header(Header);
 
-      Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
+      -- Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
 
       Deallocate_Image(Image);
    end;
