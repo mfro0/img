@@ -8,13 +8,15 @@ with Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with System;
 
+with Png_IO;
+
 procedure Img is
    type Ubyte is mod 2 ** 8;
    type Ubyte_Array is array(natural range <>) of Ubyte;
-   type Image_Array_Ptr is access Ubyte_Array;
 
    type Uint16 is range 0 .. 2 ** 16 - 1;
    type Uint16_Array is array(natural range <>) of Uint16;
+   type Image_Array_Ptr is access Uint16_Array;
 
    function Get_Bin_Content_From_Path(Path : in String) return Ubyte_Array is
       
@@ -104,13 +106,16 @@ begin -- Img
 
       package Integer_Text_IO is new Ada.Text_IO.Integer_IO (Uint16);
       use ASCII;
-      subtype Image_Array is Ubyte_Array (1 .. Integer(Header.Line_Width) *
-                                               Integer(Header.Num_Lines) *
-                                               Integer(Header.Num_Planes) /
-                                               Ubyte'size);
+      subtype Image_Array is Uint16_Array (1 .. Integer(Header.Line_Width) *
+                                                Integer(Header.Num_Lines) *
+                                                Integer(Header.Num_Planes) /
+                                                (Uint16'size / Ubyte'size));
 
       Image : Image_Array_Ptr;
    begin
+      Ada.Text_IO.Put_Line(Integer'Image(Integer(Header.Line_Width) * Integer(Header.Num_Lines) *
+                                         Integer(Header.Num_Planes) /
+                                         (Uint16'Size / Ubyte'Size)));
       Image := new Image_Array;
 
       Ubytes := Get_Bin_Content_From_Path(File_Name);
@@ -129,6 +134,8 @@ begin -- Img
       Ada.Text_IO.Put("Header'Size" & HT); Integer_Text_IO.Put(Header'Size / Ubyte'Size, 4, 10); Ada.Text_IO.Put_Line("");
 
       Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
+
+      Free(Image);
    end;
    Ada.Command_Line.Set_Exit_Status(0);
 end Img;

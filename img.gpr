@@ -1,3 +1,6 @@
+with "../png_io/png_io.gpr";
+with "../zlib/zlib.gpr";
+
 project Img is
    -- call gprbuild with "-Xver=debug" to compile a debug version
    type version is ("debug", "release");
@@ -47,11 +50,12 @@ project Img is
    package Linker is
       case ver is
          when "debug" =>
-            for Switches("Ada") use ("-g");
+            for Switches("Ada") use ("-g", "-lz");
          when "release" =>
-            for Switches("Ada") use ("-s", "-Wl,--gc-sections");
+            for Switches("Ada") use ("-s", "-Wl,--gc-sections", "-lz");
          when others =>
             null;
       end case;
+      for Map_File_Option use "-Wl,-Map,";
    end Linker;
 end Img;
