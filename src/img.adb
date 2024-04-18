@@ -1,4 +1,5 @@
 with Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
 
 with Ada.Direct_IO;
 
@@ -35,7 +36,7 @@ procedure Img is
       return(Contents);
    end Get_Bin_Content_From_Path;
 
-   procedure Decompress(Header_Length : Integer; Pattern_Length : Integer; Ubytes : Ubyte_Array; Image : out Image_Array_Ptr) is
+   procedure Decompress(Header_Length : Integer; Pattern_Length : Integer; Ubytes : Ubyte_Array; Image : in out Image_Array_Ptr) is
       index     : Integer := 0;
       finish    : Boolean := False;
    begin
@@ -112,6 +113,7 @@ begin -- Img
                                                 (Uint16'size / Ubyte'size));
 
       Image : Image_Array_Ptr;
+      procedure Deallocate_Image is new Ada.Unchecked_Deallocation(Uint16_Array, Image_Array_Ptr);
    begin
       Ada.Text_IO.Put_Line(Integer'Image(Integer(Header.Line_Width) * Integer(Header.Num_Lines) *
                                          Integer(Header.Num_Planes) /
@@ -135,7 +137,7 @@ begin -- Img
 
       Decompress(Integer(Header.Header_Length), Integer(Header.Pattern_Length), Ubytes, Image);
 
-      Free(Image);
+      Deallocate_Image(Image);
    end;
    Ada.Command_Line.Set_Exit_Status(0);
 end Img;
